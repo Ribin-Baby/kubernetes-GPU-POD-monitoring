@@ -13,7 +13,7 @@ kube_client = Kube()
 class CustomCollector(object):
     def __init__(self):
         # self.urls = [
-        #     "http://172.31.29.111:8000/data",
+        #     "http://172.31.29.111:90610/data",
         #     ]
 
         self.nodes = kube_client.get_nodes()
@@ -43,7 +43,7 @@ class CustomCollector(object):
         data_list = []
         for node in self.nodes:
             node = node.split("::")[-1]
-            url = "http://" + node + ":8000/data"
+            url = "http://" + node + ":39061/data"
             command = ["curl", "-s", url]
             try:
                 datas = json.loads(subprocess.run(command, stdout=subprocess.PIPE).stdout.decode('utf-8'))
@@ -69,6 +69,11 @@ class CustomCollector(object):
             print("ERROR:", e, datas)
             final_df_list = []
         if len(final_df_list)==0:
+            self.last_result["pid"] = "0"
+            self.last_result["gpu"] = "0"
+            self.last_result["gpu_util"] = "0"
+            self.last_result["mem_util"] = "0"
+            self.last_result["used_gpu_memory [MiB]"] = "0"
             final_df_list = self.last_result
         return final_df_list
         
@@ -144,7 +149,7 @@ class CustomCollector(object):
 
 
 if __name__ == "__main__":
-    port = 9066
+    port = 39066
     frequency = 0.5
     
     REGISTRY.unregister(GC_COLLECTOR)

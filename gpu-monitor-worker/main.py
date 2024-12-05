@@ -25,7 +25,7 @@ dummy_data = [
 
 @app.get("/")
 async def reload():
-    return {"response": "http://localhost:8000/docs -> for how to use !"}
+    return {"response": "http://localhost:39061/docs -> for how to use !"}
 
 # Endpoint to return JSON data
 @app.get("/data")
@@ -39,4 +39,4 @@ async def get_data():
     return {"response":df_gpu_util.to_json(orient="records")}
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=39061, reload=True)
